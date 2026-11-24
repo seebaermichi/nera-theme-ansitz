@@ -5,7 +5,10 @@
 // its tags, its series with the current part marked, its facts and the
 // prev/next of plugin-page-pagination; a post without a picture renders no
 // empty media element.
+import fs from 'fs'
+import path from 'path'
 import { describe, expect, inject, it } from 'vitest'
+import { ROOT } from './helpers/site.js'
 import { attr, countTags, elementByClass, page, pages, stripTags, tags } from './helpers/html.js'
 
 const builds = inject('builds')
@@ -255,5 +258,27 @@ describe('Starter fit: archive, tag page, default page', () => {
         expect(main.replace(/<header class="page__header">[\s\S]*?<\/header>/, '')).toMatch(/^\s*<div class="page__body">[\s\S]*<\/div>\s*$/)
         expect(main).toMatch(/<figure class="nera-image">/)
         expect(main).not.toMatch(/<aside/)
+    })
+})
+
+describe('Starter fit: the phone hero (§S13, addendum of 2026-11-23)', () => {
+    const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'theme.css'), 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '')
+    const phone = css.slice(css.indexOf('@media (max-width: 900px)'))
+    const rule = (text, selector) => [...text.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+        .filter(([, prelude]) => prelude.split(',').map((x) => x.trim()).includes(selector))
+        .map(([, , body]) => body).join('\n')
+
+    it('below 900px: the home hero is 740px, the post hero 700px high', () => {
+        expect(rule(phone, '.home-hero')).toMatch(/min-height: 740px/)
+        expect(rule(phone, '.post__media')).toMatch(/min-height: 700px/)
+    })
+
+    it('the picture fills the top 58 % at 74% 50% and fades to the background at 58 %', () => {
+        expect(rule(phone, '.home-hero__image')).toMatch(/height: 58%/)
+        expect(rule(phone, '.post__media img')).toMatch(/height: 58%/)
+        expect(rule(phone, '.home-hero__image img')).toMatch(/object-position: 74% 50%/)
+        expect(rule(phone, '.post__media img')).toMatch(/object-position: 74% 50%/)
+        expect(rule(phone, '.home-hero::after')).toMatch(/rgb\(var\(--shade\)\) 58%/)
+        expect(rule(phone, '.post__media::after')).toMatch(/rgb\(var\(--shade\)\) 58%/)
     })
 })

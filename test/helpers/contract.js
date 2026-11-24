@@ -9,10 +9,11 @@ export const VIEWS = [
     'partials/lang-switch.pug',
     'partials/footer.pug',
     'partials/scripts.pug',
-    // extra partials, contract too (README): as theme-blog, plus the two
-    // home blocks of Revision R3
+    // extra partials, contract too (README): as theme-blog, plus the home
+    // blocks of §S11.5 and Ansitz's highlight strip
     'partials/page-header.pug',
     'partials/post-card.pug',
+    'partials/home-highlight.pug',
     'partials/home-series.pug',
     'partials/home-about.pug',
 ]
