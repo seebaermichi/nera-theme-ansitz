@@ -1,0 +1,33 @@
+# nera-theme-ansitz/config/theme.yaml — defaults
+label: Ansitz
+tokens:
+    color:
+        bg: '#0f0f0e'
+        surface: '#191917'
+        text: '#efede6'
+        muted: '#a8a59b'
+        accent: '#e8b04a'
+        accent_text: '#0f0f0e'
+        border: '#2e2d29'
+        focus: '#e8b04a'
+    font:
+        body: "'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        heading: "'Instrument Serif', Georgia, 'Times New Roman', serif"
+        mono: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace"
+    size:
+        base: '1.0625rem'
+        measure: '40rem'
+        width: '78rem'
+        radius: '0'
+        space: '1.5rem'
+extra_css: []
+footer_links: []
+blog:
+    post_layouts: ['pages/post.pug']
+    home_posts: 7
+    featured_series: ''
+    highlight_tag: ''
+author:
+    name: ''
+    bio: ''
+    href: ''

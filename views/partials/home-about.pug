@@ -1,0 +1,14 @@
+//- The about block on the home (Revision R3, `author.*`): the initials in
+//- a mark, label t('About the author'), the name, the bio and a link
+//- t('Read more') to `author.href`. Not rendered without `author.name`.
+if themeAnsitz.author(pageLang({ meta })).name
+    section.home-about
+        span.home-about__mark(aria-hidden='true')= themeAnsitz.initials(themeAnsitz.author(pageLang({ meta })).name)
+        div
+            p= t('About the author')
+            h2= themeAnsitz.author(pageLang({ meta })).name
+            if themeAnsitz.author(pageLang({ meta })).bio
+                p= themeAnsitz.author(pageLang({ meta })).bio
+        if themeAnsitz.author(pageLang({ meta })).href
+            .home-about__links
+                a.button(href=themeAnsitz.author(pageLang({ meta })).href)= t('Read more')
