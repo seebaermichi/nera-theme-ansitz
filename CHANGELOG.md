@@ -7,6 +7,7 @@ All notable changes to `@nera-static/theme-ansitz` are documented in this file. 
 ### Fixed
 
 -   An archive row of a post without a picture no longer keeps an empty picture column: its title starts at the row's edge with the date on the right, and below 900 px it takes the whole row. CSS only (`.post-archive__item:not(:has(> div))`); rows with a picture are unchanged.
+-   A post without a picture in the home's highlight strip or featured series no longer collapses to an invisible, zero-height link: its frame keeps its shape (highlight 3:2, the series' first part 16:10, the small parts 1:1) on the surface colour and shows the post's title. CSS only (`li:not(:has(img))`); frames with a picture are unchanged.
 
 ## [1.0.1] - 2026-11-24
 

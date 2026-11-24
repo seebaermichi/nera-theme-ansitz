@@ -111,6 +111,32 @@ describe('Starter fit: home', () => {
         expect(countTags(series, 'picture')).toBe(4)
     })
 
+    it('keeps the frame of a highlight or series post without a picture and shows its title there', () => {
+        const frames = {
+            '.home-highlight li:not(:has(img)) a span': '3 / 2',
+            '.home-series li:first-child:not(:has(img)) a span': '16 / 10',
+            '.home-series li:nth-child(n + 2):not(:has(img)) a span': '1',
+        }
+        for (const [selector, ratio] of Object.entries(frames)) {
+            const body = rule(desktopCss, selector)
+            expect(body, selector).toMatch(new RegExp(`aspect-ratio: ${ratio.replace(/[/+]/g, '\\$&')};`))
+        }
+        // the title is unhidden, on the surface, in the text colour
+        for (const selector of ['.home-highlight li:not(:has(img)) a span', '.home-series li:not(:has(img)) a span']) {
+            const body = rule(desktopCss, selector)
+            expect(body, selector).toMatch(/position: static;/)
+            expect(body, selector).toMatch(/clip-path: none;/)
+            expect(body, selector).toMatch(/white-space: normal;/)
+            expect(body, selector).toMatch(/width: auto;/)
+            expect(body, selector).toMatch(/height: auto;/)
+            expect(body, selector).toMatch(/background: var\(--surface\);/)
+            expect(body, selector).toMatch(/color: var\(--text\);/)
+        }
+        // frames with a picture keep the title hidden behind it
+        expect(rule(desktopCss, '.home-highlight a span')).toMatch(/clip-path: inset\(50%\);/)
+        expect(rule(desktopCss, '.home-series li a span')).toMatch(/clip-path: inset\(50%\);/)
+    })
+
     it('shows the about block: initials, label, name, bio, Read more to author.href', () => {
         const about = elementByClass(page(pub, 'index.html'), 'section', 'home-about')
         expect(about).toMatch(/<span class="home-about__mark" aria-hidden="true">IO<\/span>/)

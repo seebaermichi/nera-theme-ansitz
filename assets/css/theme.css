@@ -652,6 +652,48 @@ span.lang-switch__link {
     white-space: nowrap;
 }
 
+/* a post without a picture keeps its frame and shows its title in it;
+   overflow stays visible, so a long title grows the frame instead of being cut */
+.home-highlight li:not(:has(img)) a span,
+.home-series li:not(:has(img)) a span {
+    position: static;
+    display: flex;
+    align-items: flex-end;
+    width: auto;
+    height: auto;
+    padding: 12px 14px;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-size: 20px;
+    line-height: 1.1;
+}
+
+.home-highlight li:not(:has(img)) a span {
+    aspect-ratio: 3 / 2;
+}
+
+/* no underline, as in the highlight strip, whose links set none */
+.home-series li:not(:has(img)) a {
+    text-decoration: none;
+}
+
+.home-series li:first-child:not(:has(img)) a span {
+    aspect-ratio: 16 / 10;
+    padding: 24px 28px;
+    font-size: 40px;
+}
+
+.home-series li:nth-child(n + 2):not(:has(img)) a span {
+    aspect-ratio: 1;
+    padding: 10px;
+    font-size: 15px;
+}
+
 /* ---------- home: featured series, one large picture, three small ---------- */
 
 .home-series {
@@ -1685,6 +1727,16 @@ a[target='_blank']::after {
     .home-highlight ol {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         row-gap: 34px;
+    }
+
+    .home-highlight li:not(:has(img)) a span {
+        padding: 8px;
+        font-size: 15px;
+    }
+
+    .home-series li:first-child:not(:has(img)) a span {
+        padding: 16px 18px;
+        font-size: 28px;
     }
 
     .home-series {
