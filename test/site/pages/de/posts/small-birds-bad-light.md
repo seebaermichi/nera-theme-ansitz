@@ -5,7 +5,7 @@ slug: small-birds-bad-light
 title: 'Kleine Vögel, schlechtes Licht'
 description: 'Ein Futterhaus, ein Fenster nach Norden und wofür ISO 6400 gut ist.'
 date: 2026-09-12
-image: /images/doncoombez-PbtNNOv_GLY-unsplash.jpg
+image: /images/doncoombez-PbtNNOv_GLY-unsplash.jpg?ratio=16:9&focus=50,32
 image_alt: 'Eine Blaumeise klammert sich an einen abgebrochenen Ast vor dunklem Hintergrund'
 location: 'Mein eigener Garten'
 tags: ['Vögel', 'Garten']

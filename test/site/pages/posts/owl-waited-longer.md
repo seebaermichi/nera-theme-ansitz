@@ -5,7 +5,7 @@ slug: owl-waited-longer
 title: 'The owl that waited longer than I did'
 description: 'Four nights under a spruce for a Ural owl that had seen me on the first.'
 date: 2026-10-09
-image: /images/gerrit-stam-uTEjXN7cPwg-unsplash.jpg
+image: /images/gerrit-stam-uTEjXN7cPwg-unsplash.jpg?ratio=16:9&focus=60,0
 image_alt: 'A Ural owl on a mossy stump among pale, bare branches'
 location: 'Bavarian Forest, Germany'
 tags: ['Birds', 'Owls', 'Hides']
