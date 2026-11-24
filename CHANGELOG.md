@@ -2,6 +2,12 @@
 
 All notable changes to `@nera-static/theme-ansitz` are documented in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and the theme follows [semantic versioning](https://semver.org/) over its contract (see the README).
 
+## [1.0.1] - 2026-11-24
+
+### Changed
+
+-   README: how to steer where a picture is cut — the frames the theme fills (hero about 1.85:1, cards 3:2, 4:5 and 1:1) and a crop of the original with plugin-images' `ratio` and `focus` on the frontmatter `image`, chosen so the hero and the post's card both keep the subject.
+
 ## [1.0.0] - 2026-11-24
 
 ### Added

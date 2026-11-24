@@ -274,6 +274,14 @@ eager_first: false
 
 Keep your originals in the assets folder and let the plugin make the sizes; list the folder in `.neraignore` if the originals (with their EXIF and GPS data) should not be published.
 
+**Where a picture is cut.** The theme fills each frame with `object-fit: cover`, centred: the hero of a post is about 1.85:1 on a wide screen, the home's cards are 3:2, 4:5 and 1:1, the strip and the archive rows 3:2. An upright or 4:3 photograph whose subject sits high (a bird's head) loses it in the wide hero. Crop the original once with plugin-images' query parameters on the frontmatter `image`, around the subject:
+
+```yaml
+image: /images/owl.jpg?ratio=16:9&focus=60,0   # x,y in percent of the original
+```
+
+`focus` only takes effect together with `ratio` (a crop). The crop is the picture everywhere the post appears, so pick a ratio that also suits its card: for an upright photograph whose card is tall (the second card of the wall, 4:5), `ratio=4:3` keeps both the head in the hero and the whole subject on the card.
+
 **Fonts.** The theme ships its three families as `.woff2` under `assets/fonts/ansitz/` (in your output: `/fonts/ansitz/`), Latin and Latin Extended subsets each, with `font-display: swap` and relative URLs, so they work under a `base_path`. To use another family, self-host it and name it in `tokens.font.*`; the theme's own files are only downloaded where their family is used.
 
 | family | files | source |
