@@ -1095,6 +1095,228 @@ span.lang-switch__link {
     content: ' →';
 }
 
+/* ---------- pages: header ---------- */
+
+.page__header {
+    padding-block: 88px 56px;
+}
+
+.page__title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(56px, 8.4vw, 128px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+.page__lead {
+    max-width: 32em;
+    margin-top: 24px;
+    font-size: 20px;
+    color: var(--muted);
+}
+
+/* ---------- archive: years in amber italics, rows with a picture ---------- */
+
+.post-archive__year {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 40px;
+    width: min(var(--width), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+    padding-block: 40px;
+    border-top: 1px solid var(--border);
+}
+
+.post-archive__year h2 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 88px;
+    line-height: 0.8;
+    color: var(--accent);
+}
+
+.post-archive__count {
+    display: block;
+    margin-top: 18px;
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--muted);
+}
+
+.post-archive__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.post-archive__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr) auto;
+    grid-template-areas: 'media title date';
+    gap: 28px;
+    align-items: center;
+    padding-block: 14px;
+    border-top: 1px solid var(--border);
+}
+
+.post-archive__item:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.post-archive__item > div {
+    grid-area: media;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.post-archive__item > div img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-archive__item > p {
+    grid-area: title;
+}
+
+.post-archive__item a {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    line-height: 1.05;
+    text-decoration: none;
+}
+
+/* the whole row is the link's target */
+.post-archive__item a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.post-archive__item:hover a {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+
+.post-archive__item span {
+    display: block;
+    margin-top: 4px;
+    font-size: 14.5px;
+    color: var(--muted);
+}
+
+.post-archive__item time {
+    grid-area: date;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* the tags at the end of the archive: a band of pills */
+.site-main > .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: min(var(--width), 100% - 2 * var(--gutter));
+    margin: 0 auto;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+}
+
+.tag-cloud__item {
+    padding: 7px 16px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.tag-cloud__item:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ---------- tag page (plugin-tags' tag overview) ---------- */
+
+.tag-overview__header {
+    padding-block: 88px 56px;
+}
+
+.tag-overview__title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(56px, 8.4vw, 128px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+}
+
+.tag-overview__image {
+    margin-top: 32px;
+}
+
+.tag-overview__item {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 6px 40px;
+    padding-block: 36px;
+    border-top: 1px solid var(--border);
+}
+
+.tag-overview__item:last-child {
+    border-bottom: 1px solid var(--border);
+}
+
+.tag-overview__item > * {
+    grid-column: 2;
+}
+
+.tag-overview__item-title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.02;
+}
+
+.tag-overview__item-date {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 14px;
+    font-size: 15px;
+    color: var(--muted);
+}
+
+.tag-overview__item-description {
+    max-width: 36em;
+    font-size: 18px;
+    color: var(--quiet);
+}
+
+.tag-overview__item-link {
+    justify-self: start;
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+
+/* the plugin-free default of the seam: the page title and body */
+.tag-page > .page__title {
+    width: min(var(--width), 100% - 2 * var(--gutter));
+    margin: 88px auto 56px;
+}
+
 /* ---------- footer ---------- */
 
 .site-footer {
@@ -1351,6 +1573,7 @@ span.lang-switch__link {
     }
 
     .tag-links__item,
+    .tag-cloud__item,
     .page-pagination__link {
         transition: color 0.15s ease, border-color 0.15s ease;
     }
@@ -1512,6 +1735,57 @@ span.lang-switch__link {
     .post__body,
     .page__body {
         font-size: 18.5px;
+    }
+
+    .page__header,
+    .tag-overview__header {
+        padding-block: 48px 32px;
+    }
+
+    .post-archive__year {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        padding-block: 28px;
+    }
+
+    .post-archive__year h2 {
+        font-size: 64px;
+    }
+
+    .post-archive__item {
+        grid-template-columns: 92px minmax(0, 1fr);
+        grid-template-areas: 'media title';
+        gap: 16px;
+    }
+
+    .post-archive__item a {
+        font-size: 24px;
+    }
+
+    .post-archive__item time {
+        display: none;
+    }
+
+    .tag-overview__item {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tag-overview__item > *,
+    .tag-overview__item-date {
+        grid-column: 1;
+    }
+
+    .tag-overview__item-date {
+        grid-row: auto;
+        padding-top: 0;
+    }
+
+    .tag-overview__item-title {
+        font-size: 34px;
+    }
+
+    .tag-page > .page__title {
+        margin-block: 48px 32px;
     }
 
     .post__header {

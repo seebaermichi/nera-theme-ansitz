@@ -205,3 +205,55 @@ describe('Starter fit: post', () => {
         expect(page(pub, 'de/index.html')).toMatch(/<link rel="alternate" type="application\/atom\+xml" href="\/de\/feed\.xml"/)
     })
 })
+
+describe('Starter fit: archive, tag page, default page', () => {
+    for (const [lang, archive, counts, word] of [['en', 'archive.html', [7, 11, 1], 'posts'], ['de', 'de/archiv.html', [7, 11, 1], 'Geschichten']]) {
+        it(`${lang}: the archive groups the posts by year, newest first, with <n> ${word}`, () => {
+            const html = page(pub, archive)
+            const years = sections(html, 'post-archive__year')
+            expect(years.map((s) => Number(/<h2>(\d{4})/.exec(s)[1]))).toEqual([2026, 2025, 2024])
+            years.forEach((section, i) => {
+                const dates = datetimes(section)
+                expect(dates.length).toBe(counts[i])
+                for (const date of dates) expect(date.startsWith(String([2026, 2025, 2024][i]))).toBe(true)
+                expect(section).toMatch(new RegExp(`<span class="post-archive__count">${counts[i]} ${word}</span>`))
+            })
+            expect(isDescending(datetimes(html))).toBe(true)
+            expect(html).toMatch(/<section class="tag-cloud">/)
+        })
+    }
+
+    it('shows each archive row with its picture, title, location and day and month', () => {
+        const [year] = sections(page(pub, 'archive.html'), 'post-archive__year')
+        const row = year.split('<li class="post-archive__item">')[2]
+        expect(row).toMatch(/^\s*<div>\s*<picture>[\s\S]*alt="A Ural owl on a mossy stump/)
+        expect(row).toMatch(/<p><a href="\/posts\/owl-waited-longer\.html">The owl that waited longer than I did<\/a><span>Bavarian Forest, Germany<\/span><\/p>/)
+        expect(row).toMatch(/<time datetime="2026-10-09">Oct 9<\/time>/)
+        // a post without a picture gets no empty media element
+        const plain = page(pub, 'archive.html').split('<li class="post-archive__item">').find((item) => item.includes('winter-hide-checklist'))
+        expect(plain).toMatch(/^\s*<p><a href/)
+    })
+
+    it('renders every generated tag page with exactly one <h1>, through pages/tag.pug', () => {
+        const tagPages = pages(pub).filter(({ file }) => /^(de\/)?tags\//.test(file))
+        expect(tagPages.length).toBeGreaterThanOrEqual(30)
+        for (const { file, html } of tagPages) {
+            expect(countTags(html, 'h1'), file).toBe(1)
+            expect(html, file).toMatch(/<section class="tag-page">\s*<section class="tag-overview">/)
+        }
+        const birds = page(pub, 'tags/birds.html')
+        expect(birds).toMatch(/<h1 class="tag-overview__title">Birds<\/h1>/)
+        expect(countTags(birds, 'article')).toBe(7)
+        expect(birds).toMatch(/<time class="tag-overview__item-date" datetime="2026-10-09">October 9, 2026<\/time>/)
+        expect(page(pub, 'de/tags/frames.html')).toMatch(/<html lang="de">/)
+    })
+
+    it('renders a default page as header and body, nothing beside them', () => {
+        const html = page(pub, 'about.html')
+        const main = /<main[^>]*>([\s\S]*)<\/main>/.exec(html)[1]
+        expect(main).toMatch(/^\s*<header class="page__header">\s*<h1 class="page__title">About<\/h1>\s*<p class="page__lead">Who is behind the camera/)
+        expect(main.replace(/<header class="page__header">[\s\S]*?<\/header>/, '')).toMatch(/^\s*<div class="page__body">[\s\S]*<\/div>\s*$/)
+        expect(main).toMatch(/<figure class="nera-image">/)
+        expect(main).not.toMatch(/<aside/)
+    })
+})
