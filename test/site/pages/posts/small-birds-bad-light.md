@@ -5,7 +5,7 @@ slug: small-birds-bad-light
 title: 'Small birds, bad light'
 description: 'A feeder, a north-facing window and what ISO 6400 is good for.'
 date: 2026-09-12
-image: /images/doncoombez-PbtNNOv_GLY-unsplash.jpg?ratio=16:9&focus=50,32
+image: /images/doncoombez-PbtNNOv_GLY-unsplash.jpg?ratio=4:3&focus=50,38
 image_alt: 'A blue tit clinging to a broken branch against a dark background'
 location: 'My own garden'
 tags: ['Birds', 'Garden']

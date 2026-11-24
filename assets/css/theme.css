@@ -808,6 +808,7 @@ span.lang-switch__link {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 40px;
     align-items: end;
+    align-content: end;
     padding-block: 88px 56px;
 }
 
@@ -1802,8 +1803,10 @@ span.lang-switch__link {
         min-height: 700px;
     }
 
-    .post__media picture,
-    .post__media img {
+    /* the picture (or a bare img) takes the top 58 %; the img inside a
+       picture fills it */
+    .post__media > picture,
+    .post__media > img {
         bottom: auto;
         height: 58%;
     }

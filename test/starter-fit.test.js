@@ -275,7 +275,11 @@ describe('Starter fit: the phone hero (§S13, addendum of 2026-11-23)', () => {
 
     it('the picture fills the top 58 % at 74% 50% and fades to the background at 58 %', () => {
         expect(rule(phone, '.home-hero__image')).toMatch(/height: 58%/)
-        expect(rule(phone, '.post__media img')).toMatch(/height: 58%/)
+        expect(rule(phone, '.post__media > picture')).toMatch(/height: 58%/)
+        expect(rule(phone, '.post__media > img')).toMatch(/height: 58%/)
+        // not on the img inside the picture as well: that would be 58 % of 58 %
+        expect(rule(phone, '.post__media img')).not.toMatch(/height/)
+        expect(rule(phone, '.post__media picture')).not.toMatch(/height/)
         expect(rule(phone, '.home-hero__image img')).toMatch(/object-position: 74% 50%/)
         expect(rule(phone, '.post__media img')).toMatch(/object-position: 74% 50%/)
         expect(rule(phone, '.home-hero::after')).toMatch(/rgb\(var\(--shade\)\) 58%/)
