@@ -1,7 +1,8 @@
-//- The featured series on the home (Revision R3, `blog.featured_series`):
-//- label t('Series'), the name, a link t('Read more') to part one, and the
-//- parts as a numbered list. Not rendered when the series has no part in the
-//- page's language.
+//- The featured series on the home (§S11.3, `blog.featured_series`): label
+//- t('Series'), the name, a link t('Read more') to part one, and the first
+//- four parts in the page's language, the first one's picture large and the
+//- next three small (the titles are the links' text, hidden behind the
+//- pictures). Not rendered when the series has no part in the language.
 if themeAnsitz.seriesParts(themeAnsitz.featuredSeries(), pageLang({ meta })).length
     section.home-series
         div
@@ -9,6 +10,9 @@ if themeAnsitz.seriesParts(themeAnsitz.featuredSeries(), pageLang({ meta })).len
             h2= themeAnsitz.featuredSeries()
             a.button(href=themeAnsitz.seriesParts(themeAnsitz.featuredSeries(), pageLang({ meta }))[0].meta.href)= t('Read more')
         ol
-            each part in themeAnsitz.seriesParts(themeAnsitz.featuredSeries(), pageLang({ meta }))
+            each item in themeAnsitz.seriesParts(themeAnsitz.featuredSeries(), pageLang({ meta })).slice(0, 4)
                 li
-                    a(href=part.meta.href)= part.meta.title
+                    a(href=item.meta.href)
+                        if item.meta.image
+                            include card-media.pug
+                        span= item.meta.title

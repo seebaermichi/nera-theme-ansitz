@@ -80,11 +80,25 @@
                 .sort((a, b) => time(b) - time(a) || byHref(a, b))
         }
 
-        // The posts the home lists: the newest `blog.home_posts` (default 7:
-        // the featured card and two rows of three).
+        // The home hero: the newest post with a frontmatter `image` (§S11.7),
+        // or null.
+        const heroPost = (lang) => posts(lang).find((page) => page.meta.image) || null
+
+        // The cards of the home's wall: the newest `blog.home_posts` (default
+        // 7) after the hero's post, which is not repeated there.
         const homePosts = (lang) => {
             const count = Number(blog.home_posts)
-            return posts(lang).slice(0, Number.isInteger(count) && count >= 0 ? count : 7)
+            const hero = heroPost(lang)
+            return posts(lang).filter((page) => page !== hero).slice(0, Number.isInteger(count) && count >= 0 ? count : 7)
+        }
+
+        // `blog.highlight_tag` (§S11.3), '' when unset, and the newest six
+        // posts whose frontmatter `tags` contain it: the film strip.
+        const highlightTag = () => (typeof blog.highlight_tag === 'string' ? blog.highlight_tag : '')
+        const highlightPosts = (lang) => {
+            const tag = highlightTag()
+            if (!tag) return []
+            return posts(lang).filter((page) => Array.isArray(page.meta.tags) && page.meta.tags.includes(tag)).slice(0, 6)
         }
 
         // The posts of a language grouped by year, newest year first. A post
@@ -160,7 +174,7 @@
             return Object.keys(translations).length >= 2 && links.length >= 2 ? links : []
         }
 
-        // The parts of a series in a language (Revision R3): posts whose
+        // The parts of a series in a language (§S11.4): posts whose
         // frontmatter `series` is `name`, ordered by `series_part`, then by
         // date. Empty for an empty name.
         const seriesParts = (name, lang) => {
@@ -174,10 +188,10 @@
                 .sort((a, b) => part(a) - part(b) || ((toDate(a.meta.createdAt) || 0) - (toDate(b.meta.createdAt) || 0)))
         }
 
-        // `blog.featured_series` (Revision R3), '' when unset.
+        // `blog.featured_series` (§S11.3), '' when unset.
         const featuredSeries = () => (typeof blog.featured_series === 'string' ? blog.featured_series : '')
 
-        // The `author` block of config/theme.yaml (Revision R3), resolved
+        // The `author` block of config/theme.yaml (§S11.3), resolved
         // for a language: `href` may be a path or a `{ <lang>: path }` map,
         // like `footer_links`.
         const author = (lang) => {
@@ -203,5 +217,5 @@
             return date ? date.toLocaleDateString(lang, { month: 'short', day: 'numeric', timeZone: 'UTC' }) : ''
         }
 
-        return { dayMonth, toDate, homePage, posts, homePosts, postsByYear, tokenRule, extraCss, footerLinks, languageLinks, seriesParts, featuredSeries, author, initials, facts }
+        return { dayMonth, toDate, homePage, posts, heroPost, homePosts, highlightTag, highlightPosts, postsByYear, tokenRule, extraCss, footerLinks, languageLinks, seriesParts, featuredSeries, author, initials, facts }
     })()
