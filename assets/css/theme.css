@@ -1171,6 +1171,12 @@ span.lang-switch__link {
     border-top: 0;
 }
 
+/* a row without a picture: no empty media column, the title starts at the edge */
+.post-archive__item:not(:has(> div)) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'title date';
+}
+
 .post-archive__item > div {
     grid-area: media;
     aspect-ratio: 3 / 2;
@@ -1768,6 +1774,11 @@ a[target='_blank']::after {
         grid-template-columns: 92px minmax(0, 1fr);
         grid-template-areas: 'media title';
         gap: 16px;
+    }
+
+    .post-archive__item:not(:has(> div)) {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: 'title';
     }
 
     .post-archive__item a {

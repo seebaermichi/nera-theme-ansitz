@@ -16,6 +16,14 @@ const pub = builds.default.public
 const datetimes = (html) => tags(html, 'time').map((a) => attr(a, 'datetime'))
 const isDescending = (list) => list.every((value, i) => i === 0 || list[i - 1] >= value)
 const sections = (html, className) => html.split(`<section class="${className}">`).slice(1).map((s) => s.split('</section>')[0])
+// theme.css without comments, split at the one breakpoint; rule() joins the
+// bodies of every rule whose selector list names `selector` exactly
+const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'theme.css'), 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '')
+const desktopCss = css.slice(0, css.indexOf('@media (max-width: 900px)'))
+const phoneCss = css.slice(css.indexOf('@media (max-width: 900px)'))
+const rule = (text, selector) => [...text.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter(([, prelude]) => prelude.split(',').map((x) => x.trim()).includes(selector))
+    .map(([, , body]) => body).join('\n')
 
 describe('Starter fit: home', () => {
     it('shows the newest post with a picture as the hero: its title as the one <h1>, description, Read more, place and exposure', () => {
@@ -237,6 +245,19 @@ describe('Starter fit: archive, tag page, default page', () => {
         expect(plain).toMatch(/^\s*<p><a href/)
     })
 
+    it('gives an archive row without a picture no empty picture column, at either width', () => {
+        const plain = '.post-archive__item:not(:has(> div))'
+        const desktop = rule(desktopCss, plain)
+        expect(desktop).toMatch(/grid-template-columns: minmax\(0, 1fr\) auto;/)
+        expect(desktop).toMatch(/grid-template-areas: 'title date';/)
+        const phone = rule(phoneCss, plain)
+        expect(phone).toMatch(/grid-template-columns: minmax\(0, 1fr\);/)
+        expect(phone).toMatch(/grid-template-areas: 'title';/)
+        // the rows with a picture keep their media column
+        expect(rule(desktopCss, '.post-archive__item')).toMatch(/grid-template-areas: 'media title date';/)
+        expect(rule(phoneCss, '.post-archive__item')).toMatch(/grid-template-areas: 'media title';/)
+    })
+
     it('renders every generated tag page with exactly one <h1>, through pages/tag.pug', () => {
         const tagPages = pages(pub).filter(({ file }) => /^(de\/)?tags\//.test(file))
         expect(tagPages.length).toBeGreaterThanOrEqual(30)
@@ -262,28 +283,22 @@ describe('Starter fit: archive, tag page, default page', () => {
 })
 
 describe('Starter fit: the phone hero (§S13, addendum of 2026-11-23)', () => {
-    const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'theme.css'), 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '')
-    const phone = css.slice(css.indexOf('@media (max-width: 900px)'))
-    const rule = (text, selector) => [...text.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
-        .filter(([, prelude]) => prelude.split(',').map((x) => x.trim()).includes(selector))
-        .map(([, , body]) => body).join('\n')
-
     it('below 900px: the home hero is 740px, the post hero 700px high', () => {
-        expect(rule(phone, '.home-hero')).toMatch(/min-height: 740px/)
-        expect(rule(phone, '.post__media')).toMatch(/min-height: 700px/)
+        expect(rule(phoneCss, '.home-hero')).toMatch(/min-height: 740px/)
+        expect(rule(phoneCss, '.post__media')).toMatch(/min-height: 700px/)
     })
 
     it('the picture fills the top 58 % at 74% 50% and fades to the background at 58 %', () => {
-        expect(rule(phone, '.home-hero__image')).toMatch(/height: 58%/)
-        expect(rule(phone, '.post__media > picture')).toMatch(/height: 58%/)
-        expect(rule(phone, '.post__media > img')).toMatch(/height: 58%/)
+        expect(rule(phoneCss, '.home-hero__image')).toMatch(/height: 58%/)
+        expect(rule(phoneCss, '.post__media > picture')).toMatch(/height: 58%/)
+        expect(rule(phoneCss, '.post__media > img')).toMatch(/height: 58%/)
         // not on the img inside the picture as well: that would be 58 % of 58 %
-        expect(rule(phone, '.post__media img')).not.toMatch(/height/)
-        expect(rule(phone, '.post__media picture')).not.toMatch(/height/)
-        expect(rule(phone, '.home-hero__image img')).toMatch(/object-position: 74% 50%/)
-        expect(rule(phone, '.post__media img')).toMatch(/object-position: 74% 50%/)
-        expect(rule(phone, '.home-hero::after')).toMatch(/rgb\(var\(--shade\)\) 58%/)
-        expect(rule(phone, '.post__media::after')).toMatch(/rgb\(var\(--shade\)\) 58%/)
+        expect(rule(phoneCss, '.post__media img')).not.toMatch(/height/)
+        expect(rule(phoneCss, '.post__media picture')).not.toMatch(/height/)
+        expect(rule(phoneCss, '.home-hero__image img')).toMatch(/object-position: 74% 50%/)
+        expect(rule(phoneCss, '.post__media img')).toMatch(/object-position: 74% 50%/)
+        expect(rule(phoneCss, '.home-hero::after')).toMatch(/rgb\(var\(--shade\)\) 58%/)
+        expect(rule(phoneCss, '.post__media::after')).toMatch(/rgb\(var\(--shade\)\) 58%/)
     })
 })
 

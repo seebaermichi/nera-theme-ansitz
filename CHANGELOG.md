@@ -2,6 +2,12 @@
 
 All notable changes to `@nera-static/theme-ansitz` are documented in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and the theme follows [semantic versioning](https://semver.org/) over its contract (see the README).
 
+## [1.0.2] - 2026-11-24
+
+### Fixed
+
+-   An archive row of a post without a picture no longer keeps an empty picture column: its title starts at the row's edge with the date on the right, and below 900 px it takes the whole row. CSS only (`.post-archive__item:not(:has(> div))`); rows with a picture are unchanged.
+
 ## [1.0.1] - 2026-11-24
 
 ### Changed
