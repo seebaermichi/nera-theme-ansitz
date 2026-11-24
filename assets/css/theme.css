@@ -1,1 +1,634 @@
-/* Ansitz — placeholder until step 2 */
+/*
+ * @nera-static/theme-ansitz — look "Ansitz", for people whose pictures do
+ * the talking. A near-black page, warm white text, one amber for links,
+ * marks and year numerals; titles in Instrument Serif at display sizes,
+ * text in Instrument Sans (ROADMAP-themes §S13). No JavaScript, no
+ * third-party request; the webfonts below are served from this site
+ * (§S11.2).
+ */
+
+/* Fonts: SIL Open Font License 1.1, see ../fonts/ansitz/OFL-*.txt. From
+   @fontsource/instrument-serif and @fontsource-variable/{instrument-sans,
+   jetbrains-mono} 5.3.0. */
+@font-face {
+    font-family: 'Instrument Serif';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url('../fonts/ansitz/instrument-serif-latin-ext-400-normal.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Instrument Serif';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url('../fonts/ansitz/instrument-serif-latin-400-normal.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Instrument Serif';
+    font-style: italic;
+    font-display: swap;
+    font-weight: 400;
+    src: url('../fonts/ansitz/instrument-serif-latin-ext-400-italic.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Instrument Serif';
+    font-style: italic;
+    font-display: swap;
+    font-weight: 400;
+    src: url('../fonts/ansitz/instrument-serif-latin-400-italic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400 700;
+    src: url('../fonts/ansitz/instrument-sans-latin-ext-wght-normal.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400 700;
+    src: url('../fonts/ansitz/instrument-sans-latin-wght-normal.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 800;
+    src: url('../fonts/ansitz/jetbrains-mono-latin-ext-wght-normal.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 800;
+    src: url('../fonts/ansitz/jetbrains-mono-latin-wght-normal.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Every token read once, with its default (§S11.3), plus the few fixed
+   colours of the look that are not tokens. */
+:root {
+    --bg: var(--theme-color-bg, #0f0f0e);
+    --surface: var(--theme-color-surface, #191917);
+    --text: var(--theme-color-text, #efede6);
+    --muted: var(--theme-color-muted, #a8a59b);
+    --accent: var(--theme-color-accent, #e8b04a);
+    --accent-text: var(--theme-color-accent-text, #0f0f0e);
+    --border: var(--theme-color-border, #2e2d29);
+    --focus: var(--theme-color-focus, #e8b04a);
+    --font-body: var(--theme-font-body, 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+    --font-heading: var(--theme-font-heading, 'Instrument Serif', Georgia, 'Times New Roman', serif);
+    --font-mono: var(--theme-font-mono, 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace);
+    --base: var(--theme-size-base, 1.0625rem);
+    --measure: var(--theme-size-measure, 40rem);
+    --width: var(--theme-size-width, 78rem);
+    --radius: var(--theme-size-radius, 0);
+    --space: var(--theme-size-space, 1.5rem);
+
+    /* light text a step below `text`: captions on pictures, running text */
+    --soft: #dcd9cf;
+    --prose: #e3e0d7;
+    --quiet: #d5d2c8;
+    /* the contact sheet: film base, frame and sprocket holes */
+    --sheet: #070707;
+    --film: #141413;
+    --sprocket: #2b2a27;
+    --shade: 15, 15, 14;
+    --gutter: 40px;
+}
+
+/* ---------- base ---------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: var(--base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+}
+
+img,
+picture {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: inherit;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote {
+    margin: 0;
+}
+
+:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 4px;
+}
+
+.skip-link {
+    position: absolute;
+    left: 12px;
+    top: -100px;
+    z-index: 10;
+    padding: 10px 18px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    font-weight: 600;
+}
+
+.skip-link:focus {
+    top: 12px;
+}
+
+/* A band's inner element carries the page width and gutter (§S12: no
+   generic wrapper class). */
+.site-header__inner,
+.site-footer__inner,
+.home-hero__inner,
+.home-statement,
+.site-main > .post-list,
+.site-main > .page__header,
+.post__header,
+.tag-overview,
+.post__footer {
+    width: 100%;
+    max-width: calc(var(--width) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+/* ---------- header ---------- */
+
+/* On a page that opens with a picture (the home hero, a post with an
+   image) the header lies on it; elsewhere it sits on a hairline. */
+.site-header {
+    border-bottom: 1px solid var(--border);
+}
+
+body:has(.home-hero__image, .post__media) .site-header {
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 2;
+    border-bottom: 0;
+}
+
+.site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 36px;
+    min-height: 88px;
+    padding-block: 14px;
+}
+
+.site-header__brand {
+    margin-right: auto;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 34px;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.site-header__nav .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 34px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.site-header__nav .nav__link {
+    display: inline-block;
+    padding: 12px 0;
+    color: var(--soft);
+    text-decoration: none;
+}
+
+.site-header__nav .nav__link:hover,
+.site-header__nav .nav__link--active,
+.site-header__nav .nav__link--active-path {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+}
+
+.lang-switch__list {
+    display: flex;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+}
+
+.lang-switch__link {
+    display: inline-block;
+    padding: 12px 0;
+    color: var(--soft);
+    text-underline-offset: 6px;
+}
+
+span.lang-switch__link {
+    color: var(--muted);
+}
+
+/* ---------- buttons: a pill with a hairline ---------- */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 26px;
+    border: 1px solid var(--text);
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.button:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
+.button--primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+}
+
+/* ---------- footer ---------- */
+
+.site-footer {
+    margin-top: 120px;
+    border-top: 1px solid var(--border);
+}
+
+.site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 32px;
+    padding-block: 32px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.site-footer a {
+    text-underline-offset: 4px;
+}
+
+.site-footer .social-media-links__list,
+.site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-footer .social-media-links__icon:empty {
+    display: none;
+}
+
+.site-footer__copy {
+    margin-left: auto;
+}
+
+/* ---------- running text (posts and pages) ---------- */
+
+/* Every block sits at the measure, centred; pictures and the pull quote
+   break out of it. */
+.post__body,
+.page__body {
+    font-size: 20px;
+    line-height: 1.7;
+    color: var(--prose);
+}
+
+.post__body > *,
+.page__body > * {
+    width: min(var(--measure), 100% - 48px);
+    margin-inline: auto;
+}
+
+.post__body > * + *,
+.page__body > * + * {
+    margin-top: calc(var(--space) * 7 / 6);
+}
+
+/* a drop cap on the first paragraph of a post */
+.post__body > p:first-child::first-letter {
+    float: left;
+    margin: 10px 14px 0 0;
+    font-family: var(--font-heading);
+    font-size: 104px;
+    line-height: 0.72;
+    color: var(--accent);
+}
+
+.post__body h2,
+.page__body h2 {
+    margin-top: 64px;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 46px;
+    line-height: 1.02;
+    color: var(--text);
+}
+
+.post__body h3,
+.page__body h3 {
+    margin-top: 48px;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.1;
+    color: var(--text);
+}
+
+.post__body a,
+.page__body a {
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+}
+
+.post__body ul,
+.page__body ul {
+    padding-left: 1.2em;
+    list-style: disc;
+}
+
+.post__body ol,
+.page__body ol {
+    padding-left: 1.4em;
+}
+
+.post__body li + li,
+.page__body li + li {
+    margin-top: 8px;
+}
+
+.post__body li::marker,
+.page__body li::marker {
+    color: var(--accent);
+}
+
+.post__body :not(pre) > code,
+.page__body :not(pre) > code {
+    padding: 0.1em 0.35em;
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+}
+
+.post__body pre,
+.page__body pre {
+    overflow-x: auto;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.post__body hr,
+.page__body hr {
+    height: 1px;
+    background: var(--border);
+    border: 0;
+}
+
+/* A Markdown image with a title: plugin-images makes it a figure, which
+   runs nearly edge to edge. */
+.post__body > .nera-image,
+.page__body > .nera-image {
+    width: min(var(--width), 100% - 80px);
+    margin-block: 88px;
+}
+
+.post__body > .nera-image img,
+.page__body > .nera-image img {
+    width: 100%;
+    max-height: 720px;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+
+.page__body > .nera-image:first-child {
+    margin-top: 0;
+}
+
+.nera-image__caption {
+    margin-top: 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/* Two pictures in one paragraph stand side by side, the first upright. */
+.post__body > p:has(> picture + picture),
+.post__body > p:has(> img + img),
+.page__body > p:has(> picture + picture),
+.page__body > p:has(> img + img) {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 32px;
+    align-items: end;
+    width: min(var(--width), 100% - 80px);
+    margin-block: 88px 20px;
+}
+
+.post__body > p:has(> picture + picture) img,
+.post__body > p:has(> img + img) img,
+.page__body > p:has(> picture + picture) img,
+.page__body > p:has(> img + img) img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+
+.post__body > p:has(> picture + picture) > :first-child img,
+.post__body > p:has(> img + img) > img:first-child,
+.page__body > p:has(> picture + picture) > :first-child img,
+.page__body > p:has(> img + img) > img:first-child {
+    aspect-ratio: 4 / 5;
+}
+
+/* the blockquote is the theme's one emphasised box: a pull quote */
+.post__body > blockquote,
+.page__body > blockquote {
+    width: min(1000px, 100% - 48px);
+    margin-block: 96px;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: clamp(34px, 4.6vw, 64px);
+    line-height: 1.08;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--text);
+}
+
+.post__body > blockquote p + p,
+.page__body > blockquote p + p {
+    margin-top: 0.4em;
+}
+
+/* a Markdown table: hairlines, a small header row; cells wrap on a phone */
+.post__body table,
+.page__body table {
+    border-collapse: collapse;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.post__body th,
+.page__body th {
+    padding: 10px 16px 10px 0;
+    border-bottom: 1px solid var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: left;
+}
+
+.post__body td,
+.page__body td {
+    padding: 12px 16px 12px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+/* ---------- motion: only for those who do not mind it ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+    .button,
+    .site-header__nav .nav__link {
+        transition: background-color 0.15s ease, color 0.15s ease;
+    }
+}
+
+/* ---------- one column below 900px ---------- */
+
+@media (max-width: 900px) {
+    :root {
+        --gutter: 20px;
+    }
+
+    .site-header__inner {
+        min-height: 0;
+    }
+
+    .site-header__brand {
+        font-size: 30px;
+    }
+
+    .site-header__nav {
+        width: 100%;
+        order: 3;
+    }
+
+    .site-header__nav .nav {
+        gap: 0 24px;
+    }
+
+    .post__body,
+    .page__body {
+        font-size: 18.5px;
+    }
+
+    .post__body > *,
+    .page__body > * {
+        width: calc(100% - 40px);
+    }
+
+    .post__body h2,
+    .page__body h2 {
+        font-size: 38px;
+    }
+
+    .post__body > .nera-image,
+    .page__body > .nera-image {
+        width: 100%;
+        margin-block: 56px;
+    }
+
+    .nera-image__caption {
+        padding-inline: 20px;
+    }
+
+    .post__body > p:has(> picture + picture),
+    .post__body > p:has(> img + img),
+    .page__body > p:has(> picture + picture),
+    .page__body > p:has(> img + img) {
+        grid-template-columns: minmax(0, 1fr);
+        width: calc(100% - 40px);
+        margin-block: 56px 16px;
+    }
+
+    .post__body > p:has(> picture + picture) > :first-child img,
+    .post__body > p:has(> img + img) > img:first-child,
+    .page__body > p:has(> picture + picture) > :first-child img,
+    .page__body > p:has(> img + img) > img:first-child {
+        aspect-ratio: 3 / 2;
+    }
+
+    .post__body > blockquote,
+    .page__body > blockquote {
+        margin-block: 64px;
+    }
+
+    .post__body table,
+    .page__body table {
+        font-size: 15px;
+    }
+}
