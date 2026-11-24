@@ -126,3 +126,82 @@ describe('Starter fit: home', () => {
         expect(stripTags(elementByClass(html, 'section', 'home-highlight'))).toContain('Horses do swim')
     })
 })
+
+describe('Starter fit: post', () => {
+    const html = page(pub, 'posts/bear-blizzard.html')
+
+    it('shows the author line with published and updated, the title, and location and image_note on the right', () => {
+        const header = elementByClass(html, 'header', 'post__header')
+        expect(header).toMatch(/<span class="post-author__mark" aria-hidden="true">IO<\/span><span class="post__author post-author__name">Ines Okafor<\/span>/)
+        expect(header).toMatch(/Published <time class="post__date" datetime="2026-11-14">November 14, 2026<\/time>/)
+        expect(header).toMatch(/Updated <time class="post__updated" datetime="2026-11-16">November 16, 2026<\/time>/)
+        expect(header).toMatch(/<h1 class="post__title">The bear who slept through the blizzard<\/h1>/)
+        expect(header).toMatch(/<p class="post__location">Kuhmo, Finland<\/p>\s*<p class="post__image-note">600 mm, f\/4, 1\/1000 s, ISO 800<\/p>/)
+        expect(header).not.toContain('post__series')
+    })
+
+    it('renders the picture through post-media, eagerly, right after the header', () => {
+        expect(html).toMatch(/<\/header>\s*<div class="post__media">\s*<picture>[\s\S]*?<img class="post__image" [^>]*alt="A brown bear lying in the snow[^"]*"[^>]*loading="eager"/)
+    })
+
+    it('renders no media element for a post without a picture', () => {
+        const plain = page(pub, 'posts/winter-hide-checklist.html')
+        expect(plain).not.toContain('post__media')
+        expect(plain).not.toMatch(/<picture|<img/)
+        for (const { file, html: built } of pages(pub).filter(({ file }) => /posts\//.test(file) && !/winter-hide-checklist/.test(file))) {
+            expect(built, file).toContain('<div class="post__media">')
+        }
+    })
+
+    it('shows its facts as a row of figures after the text', () => {
+        const facts = elementByClass(html, 'dl', 'post-facts')
+        expect(tags(facts, 'dt').length).toBe(4)
+        expect(stripTags(facts)).toBe('Time in the hide 61 h Coldest hour −19 °C Frames taken 2,300 Frames kept 4')
+        expect(html.indexOf('class="post-facts"')).toBeGreaterThan(html.indexOf('class="post__body"'))
+    })
+
+    it('lays out the body figure and the paired pictures of plugin-images', () => {
+        const body = elementByClass(html, 'div', 'post__body')
+        expect(body).toMatch(/<figure class="nera-image">[\s\S]*<figcaption class="nera-image__caption">The view on the second morning\./)
+        expect(body).toMatch(/<p>\s*<picture>[\s\S]*?<\/picture>\s*<picture>[\s\S]*?<\/picture>\s*<\/p>/)
+        expect(body).toMatch(/<blockquote>\s*<p>He put his head on his paws/)
+    })
+
+    it('shows its tags through the post-tags seam', () => {
+        const postTags = elementByClass(html, 'div', 'post__tags')
+        expect(postTags).toMatch(/<section class="tag-links">/)
+        expect(tags(postTags, 'a').map((a) => attr(a, 'href'))).toEqual(['/tags/bears.html', '/tags/finland.html', '/tags/winter.html', '/tags/hides.html'])
+    })
+
+    it('shows the series line and lists the parts of its series, the current one marked', () => {
+        const part = page(pub, 'posts/lake-without-wind.html')
+        expect(elementByClass(part, 'header', 'post__header')).toContain('<p class="post__series">Series: North, without colour · Part 2</p>')
+        const series = elementByClass(part, 'nav', 'post-series')
+        expect(part).toMatch(/<nav class="post-series" aria-label="Series">/)
+        expect(series).toContain('<h2 class="post-series__title">North, without colour</h2>')
+        const items = series.split('<li ').slice(1)
+        expect(items.length).toBe(4)
+        expect(items[0]).toMatch(/^class="post-series__item"><span>01<\/span><a href="\/posts\/kirkjufell-rain\.html">/)
+        expect(items[1]).toMatch(/^class="post-series__item post-series__item--current"><span>02<\/span><a href="\/posts\/lake-without-wind\.html" aria-current="page">/)
+        expect(page(pub, 'de/posts/lake-without-wind.html')).toContain('<p class="post__series">Serie: North, without colour · Teil 2</p>')
+    })
+
+    it('renders no series block or line and no facts for a post without them', () => {
+        const plain = page(pub, 'posts/owl-waited-longer.html')
+        expect(plain).not.toContain('post__series')
+        expect(plain).not.toContain('post-series')
+        expect(plain).not.toContain('post-facts')
+    })
+
+    it('shows previous / next from plugin-page-pagination, with the older post first', () => {
+        const pagination = elementByClass(page(pub, 'posts/owl-waited-longer.html'), 'div', 'post__pagination')
+        expect(pagination).toMatch(/<nav class="page-pagination" aria-label="Pagination">/)
+        expect(pagination).toMatch(/page-pagination__link--previous" href="\/posts\/small-birds-bad-light\.html">Small birds, bad light</)
+        expect(pagination).toMatch(/page-pagination__link--next" href="\/posts\/bear-blizzard\.html">The bear who slept through the blizzard</)
+    })
+
+    it('links the feed through the feed-link seam', () => {
+        expect(html).toMatch(/<link rel="alternate" type="application\/atom\+xml" href="\/feed\.xml"/)
+        expect(page(pub, 'de/index.html')).toMatch(/<link rel="alternate" type="application\/atom\+xml" href="\/de\/feed\.xml"/)
+    })
+})
