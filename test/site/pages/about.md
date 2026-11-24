@@ -19,6 +19,8 @@ Most of my work happens within a day's drive of home, before breakfast, from a h
 
 Every photograph on this site is available as a signed print in three sizes. Twice a year I take four people into a hide for a weekend; the dates are on the [Frames](/tags/frames.html) page. For both, write to [ines@example.com](mailto:ines@example.com).
 
+The pictures on this site that are not mine come from [Unsplash](https://unsplash.com/license); the photographers are named in the credits.
+
 ## In the bag
 
 - Two mirrorless bodies, 45 MP, silent shutter

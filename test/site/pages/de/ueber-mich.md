@@ -19,6 +19,8 @@ Die meisten Bilder entstehen eine Tagesfahrt von zu Hause entfernt, vor dem Frü
 
 Jedes Foto auf dieser Website gibt es als signierten Abzug in drei Größen. Zweimal im Jahr nehme ich vier Leute für ein Wochenende mit ins Versteck; die Termine stehen auf der Seite [Frames](/de/tags/frames.html). Für beides schreiben Sie an [ines@example.com](mailto:ines@example.com).
 
+Die Bilder auf dieser Website, die nicht von mir sind, kommen von [Unsplash](https://unsplash.com/license); die Fotografen stehen in den Credits.
+
 ## In der Tasche
 
 - Zwei spiegellose Gehäuse, 45 MP, lautloser Verschluss

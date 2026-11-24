@@ -90,5 +90,9 @@ describe('Package', () => {
         // plugin-feed is a fixture plugin, not a peer: Ansitz styles none of its markup
         expect(pkg.peerDependencies['@nera-static/plugin-feed']).toBeUndefined()
         expect(site.dependencies['@nera-static/plugin-feed']).toBe(pkg.devDependencies['@nera-static/plugin-feed'])
+        // so is plugin-link-attributes (new tab for external links): it writes
+        // attributes, no classes, so the theme styles `a[target="_blank"]`
+        expect(pkg.peerDependencies['@nera-static/plugin-link-attributes']).toBeUndefined()
+        expect(site.dependencies['@nera-static/plugin-link-attributes']).toBe(pkg.devDependencies['@nera-static/plugin-link-attributes'])
     })
 })
