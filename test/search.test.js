@@ -18,12 +18,24 @@ const pluginDir = path.dirname(require.resolve('@nera-static/plugin-search'))
 const index = (build, file) => JSON.parse(fs.readFileSync(path.join(build.public, file), 'utf-8'))
 
 const LANGS = [
-    { file: 'search.html', lang: 'en', index: 'search-index.json', twin: '/de/suche.html', title: 'Search', label: 'Search' },
-    { file: path.join('de', 'suche.html'), lang: 'de', index: 'search-index.de.json', twin: '/search.html', title: 'Suche', label: 'Suche' },
+    { file: 'search.html', href: '/search.html', other: 'about.html', lang: 'en', index: 'search-index.json', twin: '/de/suche.html', title: 'Search', label: 'Search' },
+    { file: path.join('de', 'suche.html'), href: '/de/suche.html', other: path.join('de', 'ueber-mich.html'), lang: 'de', index: 'search-index.de.json', twin: '/search.html', title: 'Suche', label: 'Suche' },
 ]
 
+// theme.css without comments, split into its rules: [selector list, body,
+// inside the 900px breakpoint]
+const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'theme.css'), 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '')
+const breakpoint = css.indexOf('@media (max-width: 900px)')
+const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => ({
+    selectors: m[1].trim().split(',').map((s) => s.trim()),
+    body: m[2],
+    phone: m.index > breakpoint,
+}))
+const rule = (selector, phone = false) => rules.find((r) => r.phone === phone && r.selectors.includes(selector))?.body || ''
+const navLinks = (html, href) => tags(html, 'a').filter((a) => /nav__link/.test(a) && attr(a, 'href') === href)
+
 describe('The fixture\'s search page', () => {
-    for (const { file, lang, index: indexFile, twin, title, label } of LANGS) {
+    for (const { file, href, other, lang, index: indexFile, twin, title, label } of LANGS) {
         it(`${lang}: renders the page header as its one <h1>, then the search input and an empty results list`, () => {
             const html = page(builds.default.public, file)
             expect(countTags(html, 'h1')).toBe(1)
@@ -51,6 +63,15 @@ describe('The fixture\'s search page', () => {
         it(`${lang}: links its slug twin in the language switch`, () => {
             const links = tags(page(builds.default.public, file), 'a').filter((a) => /lang-switch__link/.test(a))
             expect(links.map((a) => attr(a, 'href'))).toEqual([twin])
+        })
+
+        it(`${lang}: the menu links the search page on every page, active on the search page itself`, () => {
+            const own = navLinks(page(builds.default.public, file), href)
+            expect(own.length).toBe(1)
+            expect(attr(own[0], 'class')).toBe('nav__link nav__link--active')
+            const elsewhere = navLinks(page(builds.default.public, other), href)
+            expect(elsewhere.length).toBe(1)
+            expect(attr(elsewhere[0], 'class')).toBe('nav__link')
         })
 
         it(`${lang}: has an index of its own language only, with the posts in it`, () => {
@@ -98,5 +119,47 @@ describe('The fixture\'s search page', () => {
         for (const file of [...SEARCH_PAGES, 'search-index.json', 'search-index.de.json', path.join('js', 'search.js')]) {
             expect(fs.existsSync(path.join(pub, file)), file).toBe(false)
         }
+    })
+})
+
+describe('theme.css styles plugin-search', () => {
+    it('scopes every rule for the plugin\'s classes under .search', () => {
+        const selectors = rules.flatMap((r) => r.selectors).filter((s) => /\.search(?![\w-])|\.search__/.test(s))
+        expect(selectors.length).toBeGreaterThan(10)
+        for (const selector of selectors) expect(selector).toMatch(/^(\.site-main > \.search|\.search \.search__[\w-]+)/)
+    })
+
+    it('styles each of the plugin\'s classes', () => {
+        for (const name of ['search__input', 'search__results', 'search__item', 'search__link', 'search__description', 'search__highlight']) {
+            expect(rule(`.search .${name}`), name).not.toBe('')
+        }
+        expect(rule('.site-main > .search')).toMatch(/width: min\(var\(--width\), 100% - 2 \* var\(--gutter\)\)/)
+    })
+
+    it('collapses an empty results list: no space, no border', () => {
+        expect(rule('.search .search__results:empty')).toMatch(/display: none/)
+        expect(rule('.search .search__results')).not.toMatch(/border/)
+    })
+
+    it('draws the input in token colours with a visible focus', () => {
+        const input = rule('.search .search__input')
+        expect(input).toMatch(/background: var\(--surface\)/)
+        expect(input).toMatch(/color: var\(--text\)/)
+        expect(input).toMatch(/border-bottom: 1px solid var\(--muted\)/)
+        expect(input).not.toMatch(/outline/)
+        expect(rule('.search .search__input:focus')).toMatch(/border-bottom-color: var\(--accent\)/)
+        // the outline is the global :focus-visible one, only moved closer
+        expect(rule(':focus-visible')).toMatch(/outline: 3px solid var\(--focus\)/)
+        expect(rule('.search .search__input:focus-visible')).not.toMatch(/outline:/)
+    })
+
+    it('sets the description in muted and the highlight in accent (contrast pairs of §S13)', () => {
+        expect(rule('.search .search__description')).toMatch(/color: var\(--muted\)/)
+        expect(rule('.search .search__highlight')).toMatch(/color: var\(--accent\)/)
+    })
+
+    it('shrinks the input and the result titles below 900px', () => {
+        expect(rule('.search .search__input', true)).toMatch(/font-size: 19px/)
+        expect(rule('.search .search__link', true)).toMatch(/font-size: 24px/)
     })
 })

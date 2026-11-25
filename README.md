@@ -162,6 +162,56 @@ include /vendor/plugin-tags/partials/tag-cloud
 include /vendor/plugin-page-pagination/page-pagination
 ```
 
+## Search
+
+The theme styles [`@nera-static/plugin-search`](https://www.npmjs.com/package/@nera-static/plugin-search) (an optional peer) but adds no seam, key or script for it: your site gets a search page with a page type of its own, the plugin's `search.js` on that page only, and a menu item. The theme's pages stay without JavaScript.
+
+```bash
+npm install @nera-static/plugin-search
+npx nera-search     # copies the templates and theme/assets/js/search.js
+```
+
+```yaml
+# config/search.yaml — a multilingual site: one index per language
+group_by_lang: true
+```
+
+The page type writes the plugin's input and results list itself instead of including the plugin's `search.pug`, which brings an `<h1>` and a `<script>` of its own; the theme's page header stays the page's one `<h1>`:
+
+```pug
+//- theme/views/pages/search.pug
+extends ../layouts/layout.pug
+
+block main
+    include ../partials/page-header.pug
+    .search
+        input.search__input(
+            type='search'
+            aria-label=t('Search')
+            data-search-input
+            data-search-index=meta.searchIndexPath || app.searchIndexPath
+            data-results='[data-search__results]'
+        )
+        ul.search__results(data-search__results)
+```
+
+```pug
+//- theme/views/partials/scripts-extra.pug — the script on the search page only
+if meta.layout === 'pages/search.pug'
+    script(src='/js/search.js')
+```
+
+```markdown
+---
+layout: pages/search.pug
+title: Search
+lead: Find a story by animal, place or season.
+slug: search
+---
+```
+
+Translate `Search` (the input's label) and add the page to your menu (`config/navigation.yaml`, e.g. `- href: /search.html` / `name: Search`). The matches appear as rows like the archive's, the matched term in the accent colour; when nothing matches the list stays empty and takes no space, since the plugin prints no message.
+
 ## What a post may contain
 
 Pictures inside a post come from plugin-images' output, which the theme only styles. No raw HTML and no special classes are needed:
@@ -371,6 +421,7 @@ The plugin classes the theme styles, all optional peer dependencies:
 | `@nera-static/plugin-page-pagination` | `^2.4.0` | `page-pagination`, `page-pagination__link`, `page-pagination__link--previous`, `page-pagination__link--next` |
 | `@nera-static/plugin-images` | `^1.0.3` | `nera-image`, `nera-image__caption` |
 | `@nera-static/plugin-navigation` | `^3.1.0` | `nav`, `nav--list`, `nav__item`, `nav__link`, `nav__link--active`, `nav__link--active-path` — only inside `.site-header__nav` |
+| `@nera-static/plugin-search` | `^2.3.1` | `search`, `search__input`, `search__results`, `search__item`, `search__link`, `search__description`, `search__highlight` — only inside `.search` (see [Search](#search)) |
 | `@nera-static/plugin-social-media-links` | `^2.3.0` | `social-media-links` and its elements — only inside `.site-footer` |
 
 ## What your site must do

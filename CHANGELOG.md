@@ -2,6 +2,12 @@
 
 All notable changes to `@nera-static/theme-ansitz` are documented in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and the theme follows [semantic versioning](https://semver.org/) over its contract (see the README).
 
+## [1.1.0] - 2026-11-25
+
+### Added
+
+-   `@nera-static/plugin-search` `^2.3.1` as an optional peer, styled when present: the input on the surface colour with an underline and the visible focus outline, the matches as rows like the archive's (serif title, muted snippet, the matched term in the accent colour), an empty results list that takes no space. Classes `search`, `search__input`, `search__results`, `search__item`, `search__link`, `search__description`, `search__highlight`, every rule scoped under `.search`. The theme adds no seam, key or script: the README's new "Search" section shows the site's page type, the `scripts-extra.pug` override that loads `search.js` on the search page only, `config/search.yaml` and the menu item.
+
 ## [1.0.2] - 2026-11-25
 
 ### Fixed

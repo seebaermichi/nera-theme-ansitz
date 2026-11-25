@@ -21,6 +21,9 @@ const LINKED = ['views', 'assets', 'config', 'package.json', 'node_modules']
 // minute and a half to encode cold, about a second warm (global-setup.js
 // warms it once per run).
 const NOT_COPIED = new Set(['public', 'node_modules'])
+// plugin-search's indexes, left in the fixture's assets by a local build of
+// test/site: every variant writes its own, or none without the plugin.
+const GENERATED = /^theme\/assets\/search-index[^/]*\.json$/
 
 // The theme's peers (§S11.1). The fixture also uses plugin-feed (the
 // feed-link seam and the "Feed" menu item), which the theme styles nothing of.
@@ -48,7 +51,10 @@ export function makeSite(name, mutate) {
     const site = path.join(base, 'test', 'site')
     fs.cpSync(SITE, site, {
         recursive: true,
-        filter: (src) => !NOT_COPIED.has(path.relative(SITE, src).split(path.sep)[0]),
+        filter: (src) => {
+            const rel = path.relative(SITE, src).split(path.sep)
+            return !NOT_COPIED.has(rel[0]) && !GENERATED.test(rel.join('/'))
+        },
     })
     if (mutate) mutate(site)
     return { base, site }
