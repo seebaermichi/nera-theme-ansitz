@@ -1,0 +1,6 @@
+# plugin-search last, so the tag pages plugin-tags adds are in the index.
+# Without plugin-search installed (the noplugins variant) the name matches
+# nothing and the order is the default one.
+plugin-order:
+    - end:
+          - plugin-search

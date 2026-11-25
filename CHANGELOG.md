@@ -6,7 +6,7 @@ All notable changes to `@nera-static/theme-ansitz` are documented in this file. 
 
 ### Added
 
--   `@nera-static/plugin-search` `^2.3.1` as an optional peer, styled when present: the input on the surface colour with an underline and the visible focus outline, the matches as rows like the archive's (serif title, muted snippet, the matched term in the accent colour), an empty results list that takes no space. Classes `search`, `search__input`, `search__results`, `search__item`, `search__link`, `search__description`, `search__highlight`, every rule scoped under `.search`. The theme adds no seam, key or script: the README's new "Search" section shows the site's page type, the `scripts-extra.pug` override that loads `search.js` on the search page only, `config/search.yaml` and the menu item.
+-   `@nera-static/plugin-search` `^2.3.1` as an optional peer, styled when present: the input on the surface colour with an underline and the visible focus outline, the matches as rows like the archive's (serif title, muted snippet, the matched term in the accent colour), an empty results list that takes no space. Classes `search`, `search__input`, `search__results`, `search__item`, `search__link`, `search__description`, `search__highlight`, every rule scoped under `.search`. The theme adds no seam, key or script: the README's new "Search" section shows the site's page type, the `scripts-extra.pug` override that loads `search.js` on the search page only, `config/search.yaml`, `config/plugin-order.yaml` (plugin-search last, so the tag pages are in the index) and the menu item.
 
 ## [1.0.2] - 2026-11-25
 

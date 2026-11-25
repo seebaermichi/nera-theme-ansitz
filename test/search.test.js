@@ -83,6 +83,14 @@ describe('The fixture\'s search page', () => {
             }
             expect(entries.filter((entry) => /\/posts\//.test(entry.href)).length).toBeGreaterThanOrEqual(6)
         })
+
+        it(`${lang}: has every tag page of its language in the index (plugin-search runs last)`, () => {
+            const hrefs = index(builds.default, indexFile).map((entry) => entry.href)
+            const dir = lang === 'en' ? 'tags' : path.join('de', 'tags')
+            const tagPages = fs.readdirSync(path.join(builds.default.public, dir)).filter((file) => file.endsWith('.html'))
+            expect(tagPages.length).toBeGreaterThan(5)
+            for (const file of tagPages) expect(hrefs, file).toContain(`/${dir.split(path.sep).join('/')}/${file}`)
+        })
     }
 
     it('puts no <script> on any other page', () => {

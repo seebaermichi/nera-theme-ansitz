@@ -176,6 +176,13 @@ npx nera-search     # copies the templates and theme/assets/js/search.js
 group_by_lang: true
 ```
 
+```yaml
+# config/plugin-order.yaml — plugin-search last, so the tag pages are in the index
+plugin-order:
+    - end:
+          - plugin-search
+```
+
 The page type writes the plugin's input and results list itself instead of including the plugin's `search.pug`, which brings an `<h1>` and a `<script>` of its own; the theme's page header stays the page's one `<h1>`:
 
 ```pug
