@@ -223,6 +223,19 @@ export const PLUGIN_CLASSES = {
         range: '^3.1.0',
         classes: ['nav', 'nav--list', 'nav__item', 'nav__link', 'nav__link--active', 'nav__link--active-path'],
     },
+    // search.pug renders the input and the list, search.js the result items
+    '@nera-static/plugin-search': {
+        range: '^2.3.1',
+        classes: [
+            'search',
+            'search__input',
+            'search__results',
+            'search__item',
+            'search__link',
+            'search__description',
+            'search__highlight',
+        ],
+    },
     '@nera-static/plugin-social-media-links': {
         range: '^2.3.0',
         classes: [
