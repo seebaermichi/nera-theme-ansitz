@@ -1,0 +1,4 @@
+//- Seam override (§S2.4): plugin-search's client, on the search page only —
+//- every other page of the fixture stays without a <script>.
+if meta.layout === 'pages/search.pug'
+    script(src='/js/search.js')

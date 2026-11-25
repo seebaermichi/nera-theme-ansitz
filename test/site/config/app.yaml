@@ -35,3 +35,5 @@ translations:
         Privacy: Datenschutz
         # plugin keys: plugin-page-pagination
         Pagination: Blätternavigation
+        # the fixture's search page (theme/views/pages/search.pug)
+        Search: Suche

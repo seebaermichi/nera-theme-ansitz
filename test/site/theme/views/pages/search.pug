@@ -1,0 +1,21 @@
+//- The fixture's search page (plugin-search, ROADMAP-themes §S14 item 3), a
+//- page type of the site, not of the theme. It writes the plugin's interface
+//- itself instead of including the vendor search.pug, which brings an <h1>
+//- and a <script> of its own: the theme's page header is the one <h1>, and
+//- search.js comes through the scripts-extra.pug seam on this page only.
+//- `meta.searchIndexPath` is this page's language (group_by_lang); core
+//- prefixes data-search-index with base_path. The search pages carry no
+//- body text, so the page type renders none.
+extends ../layouts/layout.pug
+
+block main
+    include ../partials/page-header.pug
+    .search
+        input.search__input(
+            type='search'
+            aria-label=t('Search')
+            data-search-input
+            data-search-index=meta.searchIndexPath || app.searchIndexPath
+            data-results='[data-search__results]'
+        )
+        ul.search__results(data-search__results)

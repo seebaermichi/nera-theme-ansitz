@@ -33,6 +33,11 @@ export const PLUGINS = [
     '@nera-static/plugin-tags',
 ]
 
+// The fixture's search page (plugin-search), in both languages: its sources
+// and the pages they build.
+export const SEARCH_SOURCES = ['config/search.yaml', 'pages/search.md', 'pages/de/suche.md']
+export const SEARCH_PAGES = ['search.html', path.join('de', 'suche.html')]
+
 // Copy the fixture into a fresh temporary mirror of the repo; `mutate(site)`
 // may change the copy before it is built.
 export function makeSite(name, mutate) {
@@ -97,7 +102,7 @@ export const VARIANTS = {
             })
         ),
     // Without plugins: no plugin dependency, no vendor copies, no seam
-    // overrides — every seam at the theme's default.
+    // overrides — every seam at the theme's default — and no search page.
     noplugins: (site) => {
         const pkgFile = path.join(site, 'package.json')
         const pkg = JSON.parse(fs.readFileSync(pkgFile, 'utf-8'))
@@ -105,6 +110,10 @@ export const VARIANTS = {
         fs.writeFileSync(pkgFile, `${JSON.stringify(pkg, null, 4)}\n`)
         fs.rmSync(path.join(site, 'theme', 'views', 'vendor'), { recursive: true, force: true })
         fs.rmSync(path.join(site, 'theme', 'views', 'partials'), { recursive: true, force: true })
+        // without plugin-search there is no search page, page type or client
+        fs.rmSync(path.join(site, 'theme', 'views', 'pages'), { recursive: true, force: true })
+        fs.rmSync(path.join(site, 'theme', 'assets', 'js'), { recursive: true, force: true })
+        for (const file of SEARCH_SOURCES) fs.rmSync(path.join(site, file), { force: true })
         // without plugin-images the originals are what the pages show
         fs.rmSync(path.join(site, '.neraignore'), { force: true })
     },

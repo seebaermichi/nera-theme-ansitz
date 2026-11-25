@@ -1,0 +1,4 @@
+# plugin-search (ROADMAP-themes §S14 item 3): one index per language, so the
+# English page searches search-index.json and the German one
+# search-index.de.json. The other keys stay at the plugin's defaults.
+group_by_lang: true
